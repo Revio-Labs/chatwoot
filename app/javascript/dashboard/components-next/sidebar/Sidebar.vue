@@ -68,12 +68,13 @@ const hasAdvancedAssignment = computed(() => {
   );
 });
 
+// Enabled by default; only hidden when the account setting is explicitly false.
 const hasWorkflows = computed(
-  () => currentAccount.value?.settings?.workflows_enabled ?? false
+  () => currentAccount.value?.settings?.workflows_enabled ?? true
 );
 
 const hasTickets = computed(
-  () => currentAccount.value?.settings?.tickets_enabled ?? false
+  () => currentAccount.value?.settings?.tickets_enabled ?? true
 );
 
 const hasConversationUnreadCounts = computed(() => {

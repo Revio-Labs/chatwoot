@@ -126,12 +126,18 @@ class Account < ApplicationRecord
     users.where(account_users: { role: :administrator })
   end
 
+  # Enabled by default for every account; only disabled when the setting is
+  # explicitly set to false (e.g. via the Rails console).
   def workflows_enabled?
-    ActiveModel::Type::Boolean.new.cast(workflows_enabled).present?
+    return true if workflows_enabled.nil?
+
+    ActiveModel::Type::Boolean.new.cast(workflows_enabled)
   end
 
   def tickets_enabled?
-    ActiveModel::Type::Boolean.new.cast(tickets_enabled).present?
+    return true if tickets_enabled.nil?
+
+    ActiveModel::Type::Boolean.new.cast(tickets_enabled)
   end
 
   def all_conversation_tags
