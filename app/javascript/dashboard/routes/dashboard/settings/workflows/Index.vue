@@ -1,5 +1,6 @@
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useStore, useMapGetter } from 'dashboard/composables/store';
 import { useAlert } from 'dashboard/composables';
@@ -7,17 +8,14 @@ import SettingsLayout from '../SettingsLayout.vue';
 import BaseSettingsHeader from '../components/BaseSettingsHeader.vue';
 import Button from 'dashboard/components-next/button/Button.vue';
 import { BaseTable } from 'dashboard/components-next/table';
-import WorkflowDialog from './WorkflowDialog.vue';
 
 const { t } = useI18n();
 const store = useStore();
+const router = useRouter();
 
 const records = useMapGetter('workflows/getWorkflows');
 const uiFlags = useMapGetter('workflows/getUIFlags');
 const inboxes = useMapGetter('inboxes/getInboxes');
-
-const dialogRef = ref(null);
-const selectedWorkflow = ref(null);
 
 const isLoading = computed(() => uiFlags.value.isFetching);
 const isEmpty = computed(() => !isLoading.value && records.value.length === 0);
@@ -38,15 +36,9 @@ onMounted(() => {
   store.dispatch('inboxes/get');
 });
 
-const openCreate = () => {
-  selectedWorkflow.value = null;
-  dialogRef.value.open();
-};
-
-const openEdit = workflow => {
-  selectedWorkflow.value = workflow;
-  dialogRef.value.open();
-};
+const openCreate = () => router.push({ name: 'workflows_new' });
+const openEdit = workflow =>
+  router.push({ name: 'workflows_edit', params: { workflowId: workflow.id } });
 
 const deleteWorkflow = async id => {
   try {
@@ -111,10 +103,5 @@ const deleteWorkflow = async id => {
         </template>
       </BaseTable>
     </template>
-    <WorkflowDialog
-      ref="dialogRef"
-      :workflow="selectedWorkflow"
-      @saved="store.dispatch('workflows/get')"
-    />
   </SettingsLayout>
 </template>

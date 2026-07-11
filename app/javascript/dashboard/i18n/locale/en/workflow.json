@@ -63,6 +63,23 @@
         "LABEL": "Flow definition (JSON)",
         "INVALID": "Flow must be valid JSON"
       }
+    },
+    "BUILDER": {
+      "BACK": "Back",
+      "PALETTE": "Add step",
+      "VIEW_JSON": "JSON",
+      "VIEW_CANVAS": "Canvas",
+      "JSON_HINT": "Paste or edit the flow JSON, then switch to Canvas to apply it.",
+      "ADD_BUTTON": "Add button",
+      "NO_CONFIG": "This step has no settings.",
+      "EDGE": {
+        "TITLE": "Connection",
+        "MATCH": "Match on",
+        "BUTTON": "Button click",
+        "CONDITION": "Condition",
+        "FALLBACK": "Otherwise (fallback)",
+        "BUTTON_VALUE": "Button value"
+      }
     }
   }
 }
