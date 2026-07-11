@@ -42,7 +42,7 @@ const emit = defineEmits([
   'closeMobileSidebar',
 ]);
 
-const { accountScopedRoute, isOnChatwootCloud } = useAccount();
+const { accountScopedRoute, isOnChatwootCloud, currentAccount } = useAccount();
 const store = useStore();
 const searchShortcut = useKbd([`$mod`, 'k']);
 const { t } = useI18n();
@@ -67,6 +67,14 @@ const hasAdvancedAssignment = computed(() => {
     FEATURE_FLAGS.ADVANCED_ASSIGNMENT
   );
 });
+
+const hasWorkflows = computed(
+  () => currentAccount.value?.settings?.workflows_enabled ?? false
+);
+
+const hasTickets = computed(
+  () => currentAccount.value?.settings?.tickets_enabled ?? false
+);
 
 const hasConversationUnreadCounts = computed(() => {
   return isFeatureEnabledonAccount.value(
@@ -622,6 +630,16 @@ const menuItems = computed(() => {
         },
       ],
     },
+    ...(hasTickets.value
+      ? [
+          {
+            name: 'Tickets',
+            label: t('SIDEBAR.TICKETS'),
+            icon: 'i-lucide-ticket',
+            to: accountScopedRoute('tickets_index'),
+          },
+        ]
+      : []),
     {
       name: 'Campaigns',
       label: t('SIDEBAR.CAMPAIGNS'),
@@ -829,6 +847,26 @@ const menuItems = computed(() => {
           icon: 'i-lucide-workflow',
           to: accountScopedRoute('conversation_workflow_index'),
         },
+        ...(hasWorkflows.value
+          ? [
+              {
+                name: 'Settings Workflows',
+                label: t('SIDEBAR.WORKFLOWS'),
+                icon: 'i-lucide-git-fork',
+                to: accountScopedRoute('workflows_index'),
+              },
+            ]
+          : []),
+        ...(hasTickets.value
+          ? [
+              {
+                name: 'Settings Ticket Types',
+                label: t('SIDEBAR.TICKET_TYPES'),
+                icon: 'i-lucide-ticket',
+                to: accountScopedRoute('ticket_types_index'),
+              },
+            ]
+          : []),
         {
           name: 'Settings Security',
           label: t('SIDEBAR.SECURITY'),

@@ -1,0 +1,17 @@
+json.id ticket.id
+json.display_id ticket.display_id
+json.title ticket.title
+json.description ticket.description
+json.state ticket.state
+json.ticket_type_id ticket.ticket_type_id
+json.ticket_type_name ticket.ticket_type&.name
+json.conversation_id ticket.conversation_id
+json.contact_id ticket.contact_id
+json.contact_name ticket.contact&.name
+json.assignee_id ticket.assignee_id
+json.assignee_name ticket.assignee&.name
+json.team_id ticket.team_id
+json.custom_attributes ticket.custom_attributes
+json.resolved_at ticket.resolved_at
+json.created_at ticket.created_at
+json.updated_at ticket.updated_at

@@ -188,7 +188,6 @@
 | HMAC identity verification | HMAC-SHA256 widget user verification. | 🟢 DONE (OSS) | `identifier_hash` | ✅ `settings/inbox` (HMAC token) |
 | Google OAuth (agents) | Agent sign-in with Google. | 🟢 DONE (OSS) | omniauth google | ✅ login screen |
 | SAML SSO (agents) | Enterprise SSO (Okta/Auth0/Azure). | 🟢 DONE (EE) | `account_saml_settings` | ✅ `settings/security` |
-| Enforce SSO / block password | Force all agents onto SSO. | 🔵 PLANNED | `enforce_sso` on account | 🔵 toggle in `settings/security` |
 | SCIM provisioning | IdP-driven agent lifecycle. | ⚪ BACKLOG | new `/scim/v2` endpoint | ⚪ SCIM config UI |
 | Custom roles / permissions | Granular permission roles. | 🟢 DONE (EE) | `custom_role` | ✅ `settings/customRoles` |
 

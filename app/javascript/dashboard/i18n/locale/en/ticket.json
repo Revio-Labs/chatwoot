@@ -1,0 +1,86 @@
+{
+  "TICKET_TYPES": {
+    "HEADER": "Ticket Types",
+    "DESCRIPTION": "Define the kinds of tickets your team handles and the fields each collects.",
+    "CATEGORY": {
+      "CUSTOMER": "Customer",
+      "BACK_OFFICE": "Back office",
+      "TRACKER": "Tracker"
+    },
+    "STATUS": {
+      "ACTIVE": "Active",
+      "ARCHIVED": "Archived"
+    },
+    "LIST": {
+      "LOADING": "Loading ticket types…",
+      "EMPTY": "No ticket types yet. Create one to start routing tickets.",
+      "HEADERS": {
+        "NAME": "Name",
+        "CATEGORY": "Category",
+        "FIELDS": "Fields",
+        "STATUS": "Status",
+        "ACTIONS": "Actions"
+      }
+    },
+    "ADD": {
+      "TITLE": "New Ticket Type",
+      "API": {
+        "SUCCESS_MESSAGE": "Ticket type created successfully",
+        "ERROR_MESSAGE": "Could not create ticket type"
+      }
+    },
+    "EDIT": {
+      "TITLE": "Edit Ticket Type",
+      "API": {
+        "SUCCESS_MESSAGE": "Ticket type updated successfully",
+        "ERROR_MESSAGE": "Could not update ticket type"
+      }
+    },
+    "DELETE": {
+      "API": {
+        "SUCCESS_MESSAGE": "Ticket type deleted successfully",
+        "ERROR_MESSAGE": "Could not delete ticket type"
+      }
+    },
+    "FORM": {
+      "SAVE": "Save",
+      "NAME": {
+        "LABEL": "Name",
+        "PLACEHOLDER": "e.g. Damage"
+      },
+      "CATEGORY": {
+        "LABEL": "Category"
+      },
+      "FIELDS": {
+        "LABEL": "Fields (JSON)",
+        "INVALID": "Fields must be valid JSON"
+      }
+    }
+  },
+  "TICKETS": {
+    "HEADER": "Tickets",
+    "DESCRIPTION": "Structured requests raised from conversations.",
+    "FILTERS": {
+      "ALL_TYPES": "All types",
+      "ALL_STATES": "All states"
+    },
+    "STATE": {
+      "SUBMITTED": "Submitted",
+      "IN_PROGRESS": "In progress",
+      "WAITING": "Waiting on customer",
+      "RESOLVED": "Resolved"
+    },
+    "LIST": {
+      "LOADING": "Loading tickets…",
+      "EMPTY": "No tickets yet.",
+      "HEADERS": {
+        "ID": "ID",
+        "TITLE": "Title",
+        "TYPE": "Type",
+        "STATE": "State",
+        "CONTACT": "Contact",
+        "CREATED": "Created"
+      }
+    }
+  }
+}

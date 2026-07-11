@@ -90,7 +90,11 @@ class Workflows::RunnerService
 
   def save_collected_input(message)
     node = execution.current_node
-    return if node.blank? || node['save_to'].blank?
+    return if node.blank?
+
+    Tickets::CreateFromFormService.from_workflow_node(conversation, node, message)
+
+    return if node['save_to'].blank?
 
     case node['type']
     when 'collect_input'
@@ -117,7 +121,9 @@ class Workflows::RunnerService
   end
 
   def execute_send_form(node)
-    build_message(content: node['content'], content_type: 'form', content_attributes: { items: node['items'] })
+    content_attributes = { items: node['items'] }
+    content_attributes[:ticket_type_id] = node['ticket_type_id'] if node['ticket_type_id'].present?
+    build_message(content: node['content'], content_type: 'form', content_attributes: content_attributes)
     :wait
   end
 

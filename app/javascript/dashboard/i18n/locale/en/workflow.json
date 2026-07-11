@@ -1,0 +1,68 @@
+{
+  "WORKFLOWS": {
+    "HEADER": "Workflows",
+    "DESCRIPTION": "Build multi-step conversation flows with buttons, branching, and actions.",
+    "TRIGGERS": {
+      "CONVERSATION_CREATED": "When a conversation is created",
+      "FIRST_MESSAGE": "On the first customer message",
+      "INACTIVITY": "On customer inactivity",
+      "MANUAL": "Reusable (invoked from another flow)"
+    },
+    "STATUS": {
+      "DRAFT": "Draft",
+      "LIVE": "Live",
+      "ARCHIVED": "Archived"
+    },
+    "LIST": {
+      "LOADING": "Loading workflows…",
+      "EMPTY": "No workflows yet. Create your first flow to automate conversations.",
+      "HEADERS": {
+        "NAME": "Name",
+        "INBOX": "Inbox",
+        "TRIGGER": "Trigger",
+        "STATUS": "Status",
+        "ACTIONS": "Actions"
+      }
+    },
+    "ADD": {
+      "TITLE": "New Workflow",
+      "API": {
+        "SUCCESS_MESSAGE": "Workflow created successfully",
+        "ERROR_MESSAGE": "Could not create workflow"
+      }
+    },
+    "EDIT": {
+      "TITLE": "Edit Workflow",
+      "API": {
+        "SUCCESS_MESSAGE": "Workflow updated successfully",
+        "ERROR_MESSAGE": "Could not update workflow"
+      }
+    },
+    "DELETE": {
+      "API": {
+        "SUCCESS_MESSAGE": "Workflow deleted successfully",
+        "ERROR_MESSAGE": "Could not delete workflow"
+      }
+    },
+    "FORM": {
+      "SAVE": "Save",
+      "NAME": {
+        "LABEL": "Name",
+        "PLACEHOLDER": "e.g. AU Hosts main menu"
+      },
+      "INBOX": {
+        "LABEL": "Inbox"
+      },
+      "TRIGGER": {
+        "LABEL": "Trigger"
+      },
+      "STATUS": {
+        "LABEL": "Status"
+      },
+      "FLOW": {
+        "LABEL": "Flow definition (JSON)",
+        "INVALID": "Flow must be valid JSON"
+      }
+    }
+  }
+}

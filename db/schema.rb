@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_07_11_000002) do
+ActiveRecord::Schema[7.1].define(version: 2026_07_12_000003) do
   # These extensions should be enabled to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -1272,6 +1272,56 @@ ActiveRecord::Schema[7.1].define(version: 2026_07_11_000002) do
     t.index ["name", "account_id"], name: "index_teams_on_name_and_account_id", unique: true
   end
 
+  create_table "ticket_links", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.bigint "ticket_id", null: false
+    t.bigint "conversation_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_ticket_links_on_account_id"
+    t.index ["conversation_id"], name: "index_ticket_links_on_conversation_id"
+    t.index ["ticket_id", "conversation_id"], name: "index_ticket_links_on_ticket_id_and_conversation_id", unique: true
+    t.index ["ticket_id"], name: "index_ticket_links_on_ticket_id"
+  end
+
+  create_table "ticket_types", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.string "name", null: false
+    t.integer "category", default: 0, null: false
+    t.string "icon", default: ""
+    t.jsonb "field_schema", default: []
+    t.integer "status", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id", "name"], name: "index_ticket_types_on_account_id_and_name", unique: true
+    t.index ["account_id"], name: "index_ticket_types_on_account_id"
+  end
+
+  create_table "tickets", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.bigint "ticket_type_id", null: false
+    t.bigint "conversation_id"
+    t.bigint "contact_id"
+    t.bigint "assignee_id"
+    t.bigint "team_id"
+    t.integer "display_id", null: false
+    t.string "title", null: false
+    t.text "description"
+    t.integer "state", default: 0, null: false
+    t.jsonb "custom_attributes", default: {}
+    t.datetime "resolved_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id", "display_id"], name: "index_tickets_on_account_id_and_display_id", unique: true
+    t.index ["account_id", "ticket_type_id", "state"], name: "index_tickets_on_account_id_and_ticket_type_id_and_state"
+    t.index ["account_id"], name: "index_tickets_on_account_id"
+    t.index ["assignee_id"], name: "index_tickets_on_assignee_id"
+    t.index ["contact_id"], name: "index_tickets_on_contact_id"
+    t.index ["conversation_id"], name: "index_tickets_on_conversation_id"
+    t.index ["team_id"], name: "index_tickets_on_team_id"
+    t.index ["ticket_type_id"], name: "index_tickets_on_ticket_type_id"
+  end
+
   create_table "user_sessions", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "client_id", null: false
@@ -1431,6 +1481,21 @@ ActiveRecord::Schema[7.1].define(version: 2026_07_11_000002) do
       before(:insert).
       for_each(:row) do
     "NEW.display_id := nextval('camp_dpid_seq_' || NEW.account_id);"
+  end
+
+  create_trigger("tick_dpid_before_insert", :generated => true, :compatibility => 1).
+      on("accounts").
+      name("tick_dpid_before_insert").
+      after(:insert).
+      for_each(:row) do
+    "execute format('create sequence IF NOT EXISTS tick_dpid_seq_%s', NEW.id);"
+  end
+
+  create_trigger("tickets_before_insert_row_tr", :generated => true, :compatibility => 1).
+      on("tickets").
+      before(:insert).
+      for_each(:row) do
+    "NEW.display_id := nextval('tick_dpid_seq_' || NEW.account_id);"
   end
 
 end

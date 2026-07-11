@@ -54,6 +54,7 @@ class Account < ApplicationRecord
   store_accessor :settings, :captain_models, :captain_features
   store_accessor :settings, :reporting_timezone
   store_accessor :settings, :workflows_enabled
+  store_accessor :settings, :tickets_enabled
   store_accessor :settings, :keep_pending_on_bot_failure
   store_accessor :settings, :captain_auto_resolve_mode, :captain_false_promise_harness_enabled
   include AccountCaptainAutoResolve
@@ -102,6 +103,8 @@ class Account < ApplicationRecord
   has_many :working_hours, dependent: :destroy_async
   has_many :workflow_definitions, dependent: :destroy_async
   has_many :workflow_executions, dependent: :destroy_async
+  has_many :ticket_types, dependent: :destroy_async
+  has_many :tickets, dependent: :destroy_async
 
   has_one_attached :contacts_export
 
@@ -125,6 +128,10 @@ class Account < ApplicationRecord
 
   def workflows_enabled?
     ActiveModel::Type::Boolean.new.cast(workflows_enabled).present?
+  end
+
+  def tickets_enabled?
+    ActiveModel::Type::Boolean.new.cast(tickets_enabled).present?
   end
 
   def all_conversation_tags
@@ -199,6 +206,10 @@ class Account < ApplicationRecord
     "execute format('create sequence IF NOT EXISTS camp_dpid_seq_%s', NEW.id);"
   end
 
+  trigger.name('tick_dpid_before_insert').after(:insert).for_each(:row) do
+    "execute format('create sequence IF NOT EXISTS tick_dpid_seq_%s', NEW.id);"
+  end
+
   def validate_limit_keys
     # method overridden in enterprise module
   end
@@ -222,6 +233,7 @@ class Account < ApplicationRecord
   def remove_account_sequences
     ActiveRecord::Base.connection.exec_query("drop sequence IF EXISTS camp_dpid_seq_#{id}")
     ActiveRecord::Base.connection.exec_query("drop sequence IF EXISTS conv_dpid_seq_#{id}")
+    ActiveRecord::Base.connection.exec_query("drop sequence IF EXISTS tick_dpid_seq_#{id}")
   end
 end
 
