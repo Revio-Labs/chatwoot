@@ -61,4 +61,8 @@ module Events::Types
 
   # copilot events
   COPILOT_MESSAGE_CREATED = 'copilot.message.created'
+
+  # workflow events
+  WORKFLOW_EXECUTION_COMPLETED = 'workflow.execution.completed'
+  WORKFLOW_EXECUTION_HANDED_OFF = 'workflow.execution.handed_off'
 end

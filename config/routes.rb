@@ -130,6 +130,9 @@ Rails.application.routes.draw do
             end
           end
           resources :campaigns, only: [:index, :create, :show, :update, :destroy]
+          resources :workflows, only: [:index, :create, :show, :update, :destroy] do
+            patch :reorder, on: :collection
+          end
           resources :dashboard_apps, only: [:index, :show, :create, :update, :destroy]
           namespace :channels do
             resource :twilio_channel, only: [:create]

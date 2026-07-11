@@ -85,6 +85,11 @@ en:
     saml:
       feature_not_enabled: SAML feature not enabled for this account
       sso_not_enabled: SAML SSO is not enabled for this installation
+    workflows:
+      feature_not_enabled: Workflows feature not enabled for this account
+      flow_nodes_missing: must contain a nodes array
+      flow_too_many_nodes: 'exceeds the maximum of %{max} nodes'
+      flow_too_large: exceeds the maximum flow size
     conversations:
       unread_counts:
         feature_not_enabled: Conversation unread counts feature not enabled for this account

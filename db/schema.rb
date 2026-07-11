@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_06_20_000000) do
+ActiveRecord::Schema[7.1].define(version: 2026_07_11_000002) do
   # These extensions should be enabled to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -1343,6 +1343,45 @@ ActiveRecord::Schema[7.1].define(version: 2026_06_20_000000) do
     t.string "name"
     t.string "secret"
     t.index ["account_id", "url"], name: "index_webhooks_on_account_id_and_url", unique: true
+  end
+
+  create_table "workflow_definitions", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.bigint "inbox_id", null: false
+    t.string "name", null: false
+    t.integer "status", default: 0, null: false
+    t.integer "trigger_type", default: 0, null: false
+    t.integer "priority", default: 0, null: false
+    t.integer "audience_type", default: 0, null: false
+    t.jsonb "flow", default: {}, null: false
+    t.jsonb "trigger_rules", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id", "inbox_id", "status", "priority"], name: "idx_workflow_defs_on_inbox_status_priority"
+    t.index ["account_id"], name: "index_workflow_definitions_on_account_id"
+    t.index ["inbox_id"], name: "index_workflow_definitions_on_inbox_id"
+  end
+
+  create_table "workflow_executions", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.bigint "conversation_id", null: false
+    t.bigint "workflow_definition_id"
+    t.string "current_node_id"
+    t.integer "status", default: 0, null: false
+    t.jsonb "flow_snapshot", default: {}, null: false
+    t.jsonb "variables", default: {}
+    t.jsonb "steps", default: []
+    t.datetime "wake_at"
+    t.datetime "completed_at"
+    t.datetime "last_activity_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id", "workflow_definition_id", "status", "created_at"], name: "idx_workflow_exec_reporting"
+    t.index ["account_id"], name: "index_workflow_executions_on_account_id"
+    t.index ["conversation_id"], name: "idx_workflow_exec_one_active_per_conversation", unique: true, where: "(status = 0)"
+    t.index ["conversation_id"], name: "index_workflow_executions_on_conversation_id"
+    t.index ["wake_at"], name: "index_workflow_executions_on_wake_at", where: "((status = 0) AND (wake_at IS NOT NULL))"
+    t.index ["workflow_definition_id"], name: "index_workflow_executions_on_workflow_definition_id"
   end
 
   create_table "working_hours", force: :cascade do |t|

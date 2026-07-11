@@ -53,6 +53,7 @@ class Account < ApplicationRecord
   store_accessor :settings, :audio_transcriptions, :auto_resolve_label
   store_accessor :settings, :captain_models, :captain_features
   store_accessor :settings, :reporting_timezone
+  store_accessor :settings, :workflows_enabled
   store_accessor :settings, :keep_pending_on_bot_failure
   store_accessor :settings, :captain_auto_resolve_mode, :captain_false_promise_harness_enabled
   include AccountCaptainAutoResolve
@@ -99,6 +100,8 @@ class Account < ApplicationRecord
   has_many :webhooks, dependent: :destroy_async
   has_many :whatsapp_channels, dependent: :destroy_async, class_name: '::Channel::Whatsapp'
   has_many :working_hours, dependent: :destroy_async
+  has_many :workflow_definitions, dependent: :destroy_async
+  has_many :workflow_executions, dependent: :destroy_async
 
   has_one_attached :contacts_export
 
@@ -118,6 +121,10 @@ class Account < ApplicationRecord
 
   def administrators
     users.where(account_users: { role: :administrator })
+  end
+
+  def workflows_enabled?
+    ActiveModel::Type::Boolean.new.cast(workflows_enabled).present?
   end
 
   def all_conversation_tags

@@ -74,3 +74,10 @@ remove_orphan_conversations_job:
   cron: '0 */12 * * *'
   class: 'Internal::RemoveOrphanConversationsJob'
   queue: housekeeping
+
+# executed At every minute..
+# resumes workflow executions whose delay timers have elapsed
+workflow_wake_sweep_job:
+  cron: '*/1 * * * *'
+  class: 'Workflows::WakeSweepJob'
+  queue: scheduled_jobs

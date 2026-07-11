@@ -1,0 +1,10 @@
+json.id workflow.id
+json.name workflow.name
+json.inbox_id workflow.inbox_id
+json.status workflow.status
+json.trigger_type workflow.trigger_type
+json.audience_type workflow.audience_type
+json.priority workflow.priority
+json.flow workflow.flow
+json.created_at workflow.created_at
+json.updated_at workflow.updated_at

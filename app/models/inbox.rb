@@ -74,6 +74,7 @@ class Inbox < ApplicationRecord
   has_one :agent_bot, through: :agent_bot_inbox
   has_many :webhooks, dependent: :destroy_async
   has_many :hooks, dependent: :destroy_async, class_name: 'Integrations::Hook'
+  has_many :workflow_definitions, dependent: :destroy_async
 
   enum sender_name_type: { friendly: 0, professional: 1 }
 
@@ -172,7 +173,11 @@ class Inbox < ApplicationRecord
 
   def active_bot?
     agent_bot_inbox&.active? || hooks.where(app_id: %w[dialogflow],
-                                            status: 'enabled').count.positive?
+                                            status: 'enabled').count.positive? || active_workflow?
+  end
+
+  def active_workflow?
+    workflow_definitions.live.exists?
   end
 
   def inbox_type
