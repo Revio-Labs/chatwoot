@@ -37,23 +37,23 @@ const buttonCount = computed(() =>
 
 <template>
   <div
-    class="w-[264px] rounded-xl border bg-n-solid-2 transition-shadow"
+    class="w-[264px] rounded-xl border bg-n-solid-3 transition-shadow"
     :class="
       selected
-        ? 'border-n-brand ring-2 ring-n-brand/40 shadow-lg'
-        : 'border-n-weak shadow-sm hover:shadow-md'
+        ? 'border-n-brand ring-2 ring-n-brand/50 shadow-xl'
+        : 'border-n-strong shadow-lg hover:border-n-slate-6'
     "
   >
     <Handle
       type="target"
       :position="Position.Left"
-      class="!w-2.5 !h-2.5 !bg-n-slate-8 !border-2 !border-n-solid-2"
+      class="!w-3 !h-3 !bg-n-slate-9 !border-2 !border-n-solid-3"
     />
 
     <!-- Header -->
     <div class="flex items-center gap-2.5 px-3 py-2.5">
       <span
-        class="grid place-items-center w-7 h-7 rounded-lg bg-n-alpha-2 shrink-0"
+        class="grid place-items-center w-7 h-7 rounded-lg bg-n-alpha-3 shrink-0"
       >
         <span
           class="text-base"
@@ -68,7 +68,7 @@ const buttonCount = computed(() =>
     <!-- Body -->
     <div
       v-if="summary || buttonCount"
-      class="px-3 pb-2.5 -mt-0.5 flex flex-col gap-1.5"
+      class="px-3 py-2.5 border-t border-n-weak flex flex-col gap-1.5"
     >
       <p
         v-if="summary"
@@ -80,7 +80,7 @@ const buttonCount = computed(() =>
         <span
           v-for="(item, index) in data.items.slice(0, 4)"
           :key="index"
-          class="px-1.5 py-0.5 rounded-md bg-n-alpha-2 text-[10px] text-n-slate-11 truncate max-w-[110px]"
+          class="px-1.5 py-0.5 rounded-md bg-n-alpha-3 text-[10px] text-n-slate-11 truncate max-w-[110px]"
         >
           {{ item.title || item.label || item.value }}
         </span>
@@ -96,7 +96,7 @@ const buttonCount = computed(() =>
     <Handle
       type="source"
       :position="Position.Right"
-      class="!w-2.5 !h-2.5 !bg-n-slate-8 !border-2 !border-n-solid-2"
+      class="!w-3 !h-3 !bg-n-slate-9 !border-2 !border-n-solid-3"
     />
   </div>
 </template>

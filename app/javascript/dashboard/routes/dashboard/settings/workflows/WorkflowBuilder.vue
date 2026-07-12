@@ -23,10 +23,20 @@ import { NODE_TYPES, defaultDataFor } from './nodeTypes.js';
 import { toVueFlow, toStorage } from './flowMappers.js';
 import { layoutFlow } from './layoutFlow.js';
 
+const EDGE_COLOR = '#6b7280';
 const defaultEdgeOptions = {
   type: 'smoothstep',
-  markerEnd: MarkerType.ArrowClosed,
-  style: { strokeWidth: 1.5 },
+  markerEnd: {
+    type: MarkerType.ArrowClosed,
+    color: EDGE_COLOR,
+    width: 18,
+    height: 18,
+  },
+  style: { strokeWidth: 2, stroke: EDGE_COLOR },
+  labelStyle: { fill: '#e6e8eb', fontSize: 12, fontWeight: 600 },
+  labelBgStyle: { fill: '#0f1115', fillOpacity: 0.92 },
+  labelBgPadding: [8, 5],
+  labelBgBorderRadius: 6,
 };
 
 const route = useRoute();

@@ -11,7 +11,8 @@ const AUTO_Y_STEP = 130;
 
 export const edgeLabel = match => {
   if (!match) return '';
-  if (match.type === 'button') return match.value ?? '';
+  if (match.type === 'button')
+    return String(match.value ?? '').replace(/_/g, ' ');
   if (match.type === 'condition') return 'if…';
   if (match.type === 'fallback') return 'else';
   return '';
