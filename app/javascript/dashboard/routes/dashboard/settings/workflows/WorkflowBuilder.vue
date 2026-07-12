@@ -1,14 +1,17 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, nextTick } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useStore, useMapGetter } from 'dashboard/composables/store';
 import { useAlert } from 'dashboard/composables';
-import { VueFlow, useVueFlow } from '@vue-flow/core';
+import { VueFlow, useVueFlow, MarkerType } from '@vue-flow/core';
 import { Background } from '@vue-flow/background';
 import { Controls } from '@vue-flow/controls';
+import { MiniMap } from '@vue-flow/minimap';
 import '@vue-flow/core/dist/style.css';
 import '@vue-flow/core/dist/theme-default.css';
+import '@vue-flow/controls/dist/style.css';
+import '@vue-flow/minimap/dist/style.css';
 
 import Input from 'dashboard/components-next/input/Input.vue';
 import Select from 'dashboard/components-next/select/Select.vue';
@@ -18,6 +21,13 @@ import FlowNode from './FlowNode.vue';
 import NodePropertiesPanel from './NodePropertiesPanel.vue';
 import { NODE_TYPES, defaultDataFor } from './nodeTypes.js';
 import { toVueFlow, toStorage } from './flowMappers.js';
+import { layoutFlow } from './layoutFlow.js';
+
+const defaultEdgeOptions = {
+  type: 'smoothstep',
+  markerEnd: MarkerType.ArrowClosed,
+  style: { strokeWidth: 1.5 },
+};
 
 const route = useRoute();
 const router = useRouter();
@@ -36,7 +46,11 @@ const {
   onNodeClick,
   onEdgeClick,
   onPaneClick,
+  fitView,
 } = useVueFlow();
+
+const refitView = () =>
+  nextTick(() => fitView({ padding: 0.2, duration: 300 }));
 
 const nodes = ref([]);
 const edges = ref([]);
@@ -82,12 +96,22 @@ const nextNodeId = () => {
 
 const loadFlow = flow => {
   const mapped = toVueFlow(flow || {});
-  nodes.value = mapped.nodes;
+  // Auto-arrange when the stored flow has no saved positions (e.g. pasted JSON).
+  const hasPositions = (flow?.nodes || []).some(node => node.position);
+  nodes.value = hasPositions
+    ? mapped.nodes
+    : layoutFlow(mapped.nodes, mapped.edges);
   edges.value = mapped.edges;
   nodeCounter = mapped.nodes.reduce((max, node) => {
     const numeric = Number(String(node.id).replace(/\D/g, ''));
     return Number.isFinite(numeric) && numeric > max ? numeric : max;
   }, 0);
+  refitView();
+};
+
+const tidy = () => {
+  nodes.value = layoutFlow(nodes.value, edges.value);
+  refitView();
 };
 
 const hydrate = workflow => {
@@ -303,6 +327,14 @@ const save = async () => {
       </div>
       <div class="flex items-center gap-2 ml-auto">
         <Button
+          v-if="mode === 'canvas'"
+          variant="ghost"
+          size="sm"
+          icon="i-lucide-layout-dashboard"
+          :label="t('WORKFLOWS.BUILDER.TIDY')"
+          @click="tidy"
+        />
+        <Button
           variant="outline"
           size="sm"
           :icon="mode === 'canvas' ? 'i-lucide-code' : 'i-lucide-workflow'"
@@ -362,15 +394,18 @@ const save = async () => {
           <VueFlow
             v-model:nodes="nodes"
             v-model:edges="edges"
-            :default-viewport="{ zoom: 0.9 }"
+            :default-edge-options="defaultEdgeOptions"
+            :min-zoom="0.2"
+            :max-zoom="1.5"
             fit-view-on-init
             class="bg-n-background"
           >
             <template #node-flow="nodeProps">
               <FlowNode :data="nodeProps.data" :selected="nodeProps.selected" />
             </template>
-            <Background />
-            <Controls />
+            <Background :gap="20" :size="1" pattern-color="#3b3f45" />
+            <Controls position="bottom-left" />
+            <MiniMap pannable class="!bg-n-solid-1" />
           </VueFlow>
         </div>
 

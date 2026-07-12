@@ -67,6 +67,7 @@
     "BUILDER": {
       "BACK": "Back",
       "PALETTE": "Add step",
+      "TIDY": "Tidy",
       "VIEW_JSON": "JSON",
       "VIEW_CANVAS": "Canvas",
       "JSON_HINT": "Paste or edit the flow JSON, then switch to Canvas to apply it.",

@@ -30,6 +30,9 @@ importers:
       '@chatwoot/utils':
         specifier: ^0.0.55
         version: 0.0.55
+      '@dagrejs/dagre':
+        specifier: ^3.0.0
+        version: 3.0.0
       '@formkit/core':
         specifier: ^1.7.2
         version: 1.7.2
@@ -93,6 +96,9 @@ importers:
       '@vue-flow/core':
         specifier: ^1.48.2
         version: 1.48.2(vue@3.5.12(typescript@5.6.2))
+      '@vue-flow/minimap':
+        specifier: ^1.5.4
+        version: 1.5.4(@vue-flow/core@1.48.2(vue@3.5.12(typescript@5.6.2)))(vue@3.5.12(typescript@5.6.2))
       '@vue/compiler-sfc':
         specifier: ^3.5.8
         version: 3.5.8
@@ -712,6 +718,12 @@ packages:
     engines: {node: ^14 || ^16 || >=18}
     peerDependencies:
       postcss-selector-parser: ^6.0.10
+
+  '@dagrejs/dagre@3.0.0':
+    resolution: {integrity: sha512-ZzhnTy1rfuoew9Ez3EIw4L2znPGnYYhfn8vc9c4oB8iw6QAsszbiU0vRhlxWPFnmmNSFAkrYeF1PhM5m4lAN0Q==}
+
+  '@dagrejs/graphlib@4.0.1':
+    resolution: {integrity: sha512-IvcV6FduIIAmLwnH+yun+QtV36SC7mERqa86aClNqmMN09WhmPPYU8ckHrZBozErf+UvHPWOTJYaGYiIcs0DgA==}
 
   '@egoist/tailwindcss-icons@1.9.2':
     resolution: {integrity: sha512-I6XsSykmhu2cASg5Hp/ICLsJ/K/1aXPaSKjgbWaNp2xYnb4We/arWMmkhhV+9CglOFCUbqx0A3mM2kWV32ZIhw==}
@@ -1493,6 +1505,12 @@ packages:
   '@vue-flow/core@1.48.2':
     resolution: {integrity: sha512-raxhgKWE+G/mcEvXJjGFUDYW9rAI3GOtiHR3ZkNpwBWuIaCC1EYiBmKGwJOoNzVFgwO7COgErnK7i08i287AFA==}
     peerDependencies:
+      vue: ^3.3.0
+
+  '@vue-flow/minimap@1.5.4':
+    resolution: {integrity: sha512-l4C+XTAXnRxsRpUdN7cAVFBennC1sVRzq4bDSpVK+ag7tdMczAnhFYGgbLkUw3v3sY6gokyWwMl8CDonp8eB2g==}
+    peerDependencies:
+      '@vue-flow/core': ^1.23.0
       vue: ^3.3.0
 
   '@vue/compiler-core@3.5.12':
@@ -5480,6 +5498,12 @@ snapshots:
     dependencies:
       postcss-selector-parser: 6.1.1
 
+  '@dagrejs/dagre@3.0.0':
+    dependencies:
+      '@dagrejs/graphlib': 4.0.1
+
+  '@dagrejs/graphlib@4.0.1': {}
+
   '@egoist/tailwindcss-icons@1.9.2(tailwindcss@3.4.19)':
     dependencies:
       '@iconify/utils': 3.1.0
@@ -6256,6 +6280,13 @@ snapshots:
       vue: 3.5.12(typescript@5.6.2)
     transitivePeerDependencies:
       - '@vue/composition-api'
+
+  '@vue-flow/minimap@1.5.4(@vue-flow/core@1.48.2(vue@3.5.12(typescript@5.6.2)))(vue@3.5.12(typescript@5.6.2))':
+    dependencies:
+      '@vue-flow/core': 1.48.2(vue@3.5.12(typescript@5.6.2))
+      d3-selection: 3.0.0
+      d3-zoom: 3.0.0
+      vue: 3.5.12(typescript@5.6.2)
 
   '@vue/compiler-core@3.5.12':
     dependencies:
