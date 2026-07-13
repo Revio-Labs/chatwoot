@@ -6,5 +6,6 @@ json.trigger_type workflow.trigger_type
 json.audience_type workflow.audience_type
 json.priority workflow.priority
 json.flow workflow.flow
+json.trigger_rules workflow.trigger_rules
 json.created_at workflow.created_at
 json.updated_at workflow.updated_at

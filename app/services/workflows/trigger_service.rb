@@ -1,13 +1,13 @@
 class Workflows::TriggerService
   pattr_initialize [:conversation!, { trigger_type: :conversation_created }]
 
+  # Among the live customer-facing workflows for this inbox + trigger, in
+  # priority order, start the FIRST one whose audience (trigger_rules) matches
+  # this conversation — Intercom's "only the top matching workflow fires".
   def perform
     return unless conversation.account.workflows_enabled?
 
-    definition = conversation.inbox.workflow_definitions
-                             .live_for_inbox(conversation.inbox_id)
-                             .where(trigger_type: trigger_type)
-                             .first
+    definition = matching_definition
     return if definition.blank?
 
     interrupt_active_execution
@@ -17,6 +17,15 @@ class Workflows::TriggerService
   end
 
   private
+
+  def matching_definition
+    matcher = Workflows::AudienceMatcher.new(conversation: conversation)
+    conversation.inbox.workflow_definitions
+                .live_for_inbox(conversation.inbox_id)
+                .customer_facing
+                .where(trigger_type: trigger_type)
+                .detect { |definition| matcher.matches?(definition) }
+  end
 
   def interrupt_active_execution
     conversation.workflow_executions.active.find_each(&:interrupted!)

@@ -8,6 +8,7 @@ FactoryBot.define do
     trigger_type { :conversation_created }
     audience_type { :customer_facing }
     priority { 0 }
+    trigger_rules { {} }
     flow do
       {
         'nodes' => [

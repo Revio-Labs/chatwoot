@@ -11,13 +11,13 @@ class Api::V1::Accounts::WorkflowsController < Api::V1::Accounts::BaseController
 
   def create
     @workflow = Current.account.workflow_definitions.new(workflow_permit)
-    @workflow.flow = params[:flow] if params[:flow].present?
+    assign_json_attributes
     @workflow.save!
   end
 
   def update
     @workflow.assign_attributes(workflow_permit)
-    @workflow.flow = params[:flow] if params[:flow].present?
+    assign_json_attributes
     @workflow.save!
   end
 
@@ -37,6 +37,12 @@ class Api::V1::Accounts::WorkflowsController < Api::V1::Accounts::BaseController
 
   def fetch_workflow
     @workflow = Current.account.workflow_definitions.find(params[:id])
+  end
+
+  # flow and trigger_rules are free-form JSON, assigned outside strong params.
+  def assign_json_attributes
+    @workflow.flow = params[:flow] if params[:flow].present?
+    @workflow.trigger_rules = params[:trigger_rules] if params.key?(:trigger_rules)
   end
 
   def workflow_permit

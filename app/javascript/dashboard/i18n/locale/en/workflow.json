@@ -64,6 +64,34 @@
         "INVALID": "Flow must be valid JSON"
       }
     },
+    "AUDIENCE": {
+      "BUTTON": "Audience",
+      "TITLE": "Audience & priority",
+      "DESCRIPTION": "Choose who this workflow runs for. When several workflows share an inbox and trigger, the top-priority one whose audience matches fires.",
+      "CONDITIONS": "Match conditions",
+      "ADD_CONDITION": "Add condition",
+      "ATTRIBUTE_PLACEHOLDER": "attribute (e.g. market)",
+      "TYPE": {
+        "LABEL": "Workflow type",
+        "CUSTOMER_FACING": "Customer-facing (only the top match fires)",
+        "BACKGROUND": "Background (all matches run)"
+      },
+      "CONTACT_TYPE": {
+        "LABEL": "Who can trigger it",
+        "ANY": "Anyone",
+        "IDENTIFIED": "Identified users",
+        "VISITOR": "Visitors & leads"
+      },
+      "SCOPE": {
+        "CONTACT": "Contact",
+        "CONVERSATION": "Conversation"
+      },
+      "OPERATOR": {
+        "EQUAL": "is",
+        "NOT_EQUAL": "is not",
+        "CONTAINS": "contains"
+      }
+    },
     "BUILDER": {
       "BACK": "Back",
       "PALETTE": "Add step",

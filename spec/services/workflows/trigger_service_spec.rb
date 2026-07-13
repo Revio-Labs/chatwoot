@@ -39,4 +39,36 @@ RSpec.describe Workflows::TriggerService do
     create(:workflow_definition, account: account, inbox: inbox, status: :live, trigger_type: :manual)
     expect(described_class.new(conversation: conversation, trigger_type: :conversation_created).perform).to be_nil
   end
+
+  describe 'audience matching (one inbox, AU + SG)' do
+    def region_workflow(name, market)
+      create(:workflow_definition, account: account, inbox: inbox, status: :live, name: name,
+                                   trigger_rules: { 'conditions' => [
+                                     { 'attribute_key' => 'market', 'scope' => 'contact',
+                                       'filter_operator' => 'equal_to', 'values' => [market] }
+                                   ] })
+    end
+
+    before do
+      region_workflow('AU Hosts', 'Australia')
+      region_workflow('SG Hosts', 'Singapore')
+    end
+
+    it 'fires the AU workflow for an AU contact' do
+      conversation.contact.update!(custom_attributes: { 'market' => 'Australia' })
+      execution = described_class.new(conversation: conversation).perform
+      expect(execution.workflow_definition.name).to eq('AU Hosts')
+    end
+
+    it 'fires the SG workflow for a SG contact' do
+      conversation.contact.update!(custom_attributes: { 'market' => 'Singapore' })
+      execution = described_class.new(conversation: conversation).perform
+      expect(execution.workflow_definition.name).to eq('SG Hosts')
+    end
+
+    it 'starts nothing when no audience matches' do
+      conversation.contact.update!(custom_attributes: { 'market' => 'Malaysia' })
+      expect(described_class.new(conversation: conversation).perform).to be_nil
+    end
+  end
 end

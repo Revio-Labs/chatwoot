@@ -19,6 +19,7 @@ import TextArea from 'dashboard/components-next/textarea/TextArea.vue';
 import Button from 'dashboard/components-next/button/Button.vue';
 import FlowNode from './FlowNode.vue';
 import NodePropertiesPanel from './NodePropertiesPanel.vue';
+import AudienceDialog from './AudienceDialog.vue';
 import { NODE_TYPES, defaultDataFor } from './nodeTypes.js';
 import { toVueFlow, toStorage } from './flowMappers.js';
 import { layoutFlow } from './layoutFlow.js';
@@ -74,6 +75,9 @@ const name = ref('');
 const inboxId = ref('');
 const triggerType = ref('conversation_created');
 const status = ref('draft');
+const audienceType = ref('customer_facing');
+const triggerRules = ref({});
+const audienceDialogRef = ref(null);
 
 const workflowId = computed(() => route.params.workflowId);
 const isEditing = computed(() => !!workflowId.value);
@@ -129,7 +133,14 @@ const hydrate = workflow => {
   inboxId.value = workflow.inbox_id;
   triggerType.value = workflow.trigger_type;
   status.value = workflow.status;
+  audienceType.value = workflow.audience_type || 'customer_facing';
+  triggerRules.value = workflow.trigger_rules || {};
   loadFlow(workflow.flow);
+};
+
+const onAudienceSave = ({ audience_type: type, trigger_rules: rules }) => {
+  audienceType.value = type;
+  triggerRules.value = rules;
 };
 
 onMounted(async () => {
@@ -274,6 +285,8 @@ const save = async () => {
     inbox_id: inboxId.value,
     trigger_type: triggerType.value,
     status: status.value,
+    audience_type: audienceType.value,
+    trigger_rules: triggerRules.value,
     flow,
   };
 
@@ -336,6 +349,13 @@ const save = async () => {
         <Select v-model="status" :options="statusOptions" />
       </div>
       <div class="flex items-center gap-2 ml-auto">
+        <Button
+          variant="ghost"
+          size="sm"
+          icon="i-lucide-users"
+          :label="t('WORKFLOWS.AUDIENCE.BUTTON')"
+          @click="audienceDialogRef.open()"
+        />
         <Button
           v-if="mode === 'canvas'"
           variant="ghost"
@@ -434,5 +454,12 @@ const save = async () => {
         />
       </template>
     </div>
+
+    <AudienceDialog
+      ref="audienceDialogRef"
+      :trigger-rules="triggerRules"
+      :audience-type="audienceType"
+      @save="onAudienceSave"
+    />
   </div>
 </template>
