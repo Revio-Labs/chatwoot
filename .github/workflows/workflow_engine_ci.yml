@@ -57,6 +57,7 @@ jobs:
             spec/services/tickets \
             spec/jobs/workflows \
             spec/listeners/workflow_listener_spec.rb \
+            spec/integration/workflows \
             spec/controllers/api/v1/accounts/workflows_controller_spec.rb \
             spec/controllers/api/v1/accounts/tickets_controller_spec.rb \
             spec/controllers/api/v1/accounts/ticket_types_controller_spec.rb
